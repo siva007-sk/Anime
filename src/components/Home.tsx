@@ -1,45 +1,30 @@
-import { useQuery, gql } from "@apollo/client";
+import { useState } from "react";
+import useFetchList from "../hooks/useFetchList";
 import Anime from "../types/Anime";
+import FetchResponse from "../types/FetchResponse";
 import AnimeCard from "./AnimeCard";
+import Pagination from "./Pagination";
 
 export default function Home() {
-  const GET_TRENDING = gql`
-    query TrendingTitles($page: Int) {
-      Page(page: $page, perPage: 10) {
-        media(sort: TRENDING_DESC) {
-          id
-          title {
-            romaji
-            english
-          }
-          coverImage {
-            large
-          }
-          averageScore
-          genres
-        }
-      }
-    }
-  `;
+  const [page, setPage] = useState(1);
+  const response: FetchResponse = useFetchList(page);
 
-  const { data, loading, error } = useQuery(GET_TRENDING, {
-    variables: { page: 1 },
-  });
+  if (response.loading) return <h1>Loading...</h1>;
+  if (response.error) return <h1>Something went wrong</h1>;
+  if (!response.data?.length) return <h1>no movies found</h1>;
+
   return (
     <>
-      {loading ? (
-        <h1>Loading...</h1>
-      ) : error ? (
-        <h1>Something went wrong</h1>
-      ) : data?.Page?.media?.length ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-slate-900 p-24">
-          {data?.Page?.media?.map((anime: Anime) => (
-            <AnimeCard anime={anime} key={anime.id} />
-          ))}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {response.data.map((anime: Anime) => (
+              <AnimeCard anime={anime} key={anime.id} />
+            ))}
+          </div>
+          <Pagination setPage={setPage} page={response.page}></Pagination>
         </div>
-      ) : (
-        <h1>no movies found</h1>
-      )}
+      </div>
     </>
   );
 }
