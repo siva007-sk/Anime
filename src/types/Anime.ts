@@ -1,5 +1,5 @@
 type Anime = {
-  id: string;
+  id: number;
   title: { romaji: string; english: string };
   coverImage: { large: string };
   genres: string[];

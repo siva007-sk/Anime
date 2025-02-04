@@ -7,7 +7,10 @@ type AnimeCardProps = {
 
 const AnimeCard: React.FC<AnimeCardProps> = ({ anime }) => {
   return (
-    <div className="group bg-slate-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
+    <div
+      className="group bg-slate-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 cursor-pointer"
+      onClick={() => open(`/animeDetails/${anime.id}`, "_self")}
+    >
       <div className="relative aspect-video overflow-hidden">
         <img
           src={anime.coverImage.large}
@@ -15,7 +18,7 @@ const AnimeCard: React.FC<AnimeCardProps> = ({ anime }) => {
           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute top-3 right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-          {anime.averageScore || "N/A"}
+          {anime.averageScore + "%" || "N/A"}
         </div>
       </div>
       <div className="p-4">
