@@ -28,7 +28,17 @@ export default function Home() {
             <AnimeCard anime={anime} key={anime.id} />
           ))}
         </div>
-        <Pagination setPage={setPage} page={response.page}></Pagination>
+        <Pagination
+          setPage={setPage}
+          page={
+            response.page ?? {
+              currentPage: 1,
+              hasNextPage: false,
+              lastPage: 1,
+              total: 1,
+            }
+          }
+        ></Pagination>
       </div>
     </>
   );
