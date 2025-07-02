@@ -1,15 +1,18 @@
 import React from "react";
 import Anime from "../types/Anime";
+import { useNavigate } from "react-router-dom";
 
 type AnimeCardProps = {
   anime: Anime;
 };
 
 const AnimeCard: React.FC<AnimeCardProps> = ({ anime }) => {
+  const navigate = useNavigate();
+
   return (
     <div
       className="group bg-slate-800 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 cursor-pointer"
-      onClick={() => open(`/animeDetails/${anime.id}`, "_self")}
+      onClick={() => navigate(`/animeDetails/${anime.id}`)}
     >
       <div className="relative aspect-video overflow-hidden">
         <img
