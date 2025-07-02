@@ -24,20 +24,26 @@ const Pagination = ({ setPage, page }: PaginationProps) => {
         Previous
       </button>
       <div className="flex gap-2">
-        {[1, 2, 3].map((_p) => (
-          <span
-            key={_p}
-            onClick={() => setPage(_p)}
-            className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
-                  ${
-                    _p === page.currentPage
-                      ? "bg-blue-500 text-white"
-                      : "text-slate-400 hover:bg-slate-700"
-                  }`}
-          >
-            {_p}
-          </span>
-        ))}
+        {Array.from({ length: page.lastPage || 1 }, (_, i) => i + 1)
+          .filter((p) => {
+            const start = Math.max(1, page.currentPage - 1);
+            const end = Math.min(page.lastPage || 1, page.currentPage + 1);
+            return p >= start && p <= end;
+          })
+          .map((_p) => (
+            <span
+              key={_p}
+              onClick={() => setPage(_p)}
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors cursor-pointer
+                    ${
+                      _p === page.currentPage
+                        ? "bg-blue-500 text-white"
+                        : "text-slate-400 hover:bg-slate-700"
+                    }`}
+            >
+              {_p}
+            </span>
+          ))}
       </div>
       <button
         onClick={handleNext}
